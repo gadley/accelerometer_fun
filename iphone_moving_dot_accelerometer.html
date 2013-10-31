@@ -1,0 +1,72 @@
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+#sphere {
+	position: absolute;	
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	-webkit-radius: 20px;
+	background-color: blue;
+}
+	</style>
+	
+</head>
+<body>
+<div id="sphere"></div>
+<ul>
+	<li id="accelerationX"></li>
+</ul>
+</body>
+<script>
+	var sphere = document.getElementById("sphere");
+	var x=100;
+	var y=100;
+	var radius=20;
+	if (window.DeviceMotionEvent != undefined) {
+		window.ondevicemotion = function(e)
+		{
+			vector_x = e.accelerationIncludingGravity.x;
+		    vector_y = e.accelerationIncludingGravity.y; 
+		    document.getElementById("accelerationX").innerHTML = radius;
+		}
+		function move()
+		{
+			x=x+vector_x;
+			y=y-vector_y;
+		}
+		setInterval( function() {
+			move();
+			testWalls();
+			sphere.style.top = y + "px";
+			sphere.style.left = x + "px";
+		}, 25);
+
+		function testWalls()
+		{
+			if (x<0)
+			{
+				x=0;
+				// vector_x=-vector_x*-1;
+			}
+			else if (x>document.documentElement.clientWidth-radius)
+			{
+				x=document.documentElement.clientWidth-radius;
+				// vector_x=vector_x*-1;
+			}
+			if (y>document.documentElement.clientHeight-radius)
+			{
+				y=document.documentElement.clientHeight-radius;
+				// vector_y=vector_y*-1;
+			}
+			else if (y<0)
+			{
+				y=0;
+				// vector_y=vector_y*-1;
+			}
+		}
+	}
+	// setTimeout(render, 25);
+</script>
+</html>
